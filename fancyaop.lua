@@ -1,12 +1,9 @@
--- fancyAop by fan
--- no follow details
--- date 2014.01.14
--- fancyAop method to create AOP object
+--fancyAop by fan
+-- create the aop
 function fancyAop(func)
 	local AOP = ( function ()
-		-- THE CLASS AOP TABLE
 		local AOP = { ["aop_method"] = nil, ["next_aop"] = nil };
-		-- constructor
+		--constructor
 		function AOP:ctor (aop_obj)
 			if type(aop_obj) == "function" then
 				func, aop_obj = aop_obj, {};
@@ -31,22 +28,22 @@ function fancyAop(func)
 			end
 			return self;
 		end
-		-- set next aop chain
+		-- set next aop chain object
 		function AOP:setNext (aop)
 			if getmetatable(aop) == AOP then
 				self.next_aop = aop;
 			end
 			return self;
 		end
-		-- get the method
+		-- get method
 		function AOP:getMethod ()
 			return self.aop_method;
 		end
-		-- get next
+		-- get the next aop chain object
 		function AOP:getNext ()
 			return self.next_aop;
 		end
-		-- mark sth. to run after method
+		-- mark sth. as the follow aop object
 		function AOP:after (param)
 			if type(param) == "function" then
 				local naop = AOP:ctor();
@@ -58,7 +55,7 @@ function fancyAop(func)
 			end
 			return self;
 		end
-		-- mark sth. to run before method
+		-- mark sth. as the preview aop object
 		function AOP:before (param)
 			if type(param) == "function" then
 				local baop = AOP:ctor();
@@ -72,9 +69,11 @@ function fancyAop(func)
 			end
 			return self;
 		end
-		-- mark sth. to round method
+		-- round the method
 		function AOP:round (param)
-			return self:before(param):after(param);
+			local caop = self:after(param);
+			caop = caop:before(param);
+			return caop;
 		end
 		-- run the aop chain
 		function AOP:run (...)
