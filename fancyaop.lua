@@ -46,26 +46,20 @@ function fancyAop(func)
 		-- mark sth. as the follow aop object
 		function AOP:after (param)
 			if type(param) == "function" then
-				local naop = AOP:ctor();
-				naop:setMethod(param);
-				self:setNext(naop);
+				return self:setNext(AOP:ctor():setMethod(param));
 			end
 			if getmetatable(aop) == AOP then
-				self:setNext(param);
+				return self:setNext(param);
 			end
 			return self;
 		end
 		-- mark sth. as the preview aop object
 		function AOP:before (param)
 			if type(param) == "function" then
-				local baop = AOP:ctor();
-				baop:setMethod(param);
-				baop:setNext(self);
-				return baop;
+				return AOP:ctor():setMethod(param):setNext(self);
 			end
 			if getmetatable(aop) == AOP then
-				self:setNext(param);
-				return param;
+				return param:setNext(self);
 			end
 			return self;
 		end
@@ -75,13 +69,11 @@ function fancyAop(func)
 		end
 		-- run the aop chain
 		function AOP:run (...)
-			local method = self:getMethod();
-			local next_aop = self:getNext();
-			if method then
-				method(unpack(arg));
+			if self:getMethod() then
+				self:getMethod()(unpack(arg));
 			end
-			if next_aop then
-				return next_aop:run(unpack(arg))
+			if self:getNext() then
+				return self:getNext():run(unpack(arg))
 			end
 		end
 		return AOP;
