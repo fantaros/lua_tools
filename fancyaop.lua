@@ -48,17 +48,17 @@ function fancyAop(func)
 			return self;
 		end
 		function AOP:before (param)
-			local baop = nil;
 			if type(param) == "function" then
-				baop = AOP:ctor();
+				local baop = AOP:ctor();
 				baop:setMethod(param);
 				baop:setNext(self);
+				return baop;
 			end
 			if getmetatable(aop) == AOP then
-				baop = param;
 				self:setNext(param);
+				return param;
 			end
-			return baop;
+			return self;
 		end
 		function AOP:round (param)
 			local s = self:after(param);
