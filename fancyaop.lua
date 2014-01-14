@@ -86,8 +86,7 @@ function fancyAop(func)
 		end
 		return AOP;
 	end ) ( );
-	local self_aop = AOP:ctor(func);
-	return self_aop;
+	return AOP:ctor(func);
 end
 
 -- test code
