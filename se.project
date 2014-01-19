@@ -1,0 +1,5 @@
+<project>
+ <name>witch</name>
+ <desc>witch</desc>
+ <script>main.script</script>
+</project>
