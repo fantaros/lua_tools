@@ -16,7 +16,6 @@ function main()
 
 end
 
---if getScriptElfVersion() < 201 then
---	main()
---end
-
+if getScriptElfVersion and getScriptElfVersion() < 201 then
+	main();
+end

@@ -1,5 +1,5 @@
 <project>
- <name>witch</name>
- <desc>witch</desc>
- <script>main.script</script>
+ <name>vcwitch</name>
+ <desc>vcwitch</desc>
+ <script>main.lua</script>
 </project>
